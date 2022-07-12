@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+ <!-- 
+ * The Making of A Law"
+ *
+ *  By Gregor Aisch (https://driven-by-data.net/)
+ *
+ * Released under the GPL v3 license.
+ * deps: jquery, raphaeljs
+ *
+ -->
+
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>La Vie de la Loi</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="index_files/bootstrap.css" rel="stylesheet">
+    <link href="index_files/custom.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+
+
+  </head>
+
+  <body data-spy="scroll">
+      <div class="header" >
+        <div class="header_container">
+            <a class="header_link"  href="https://linc.cnil.fr">
+                <img typeof="foaf:Image" style="object-fit: contain;display:block;margin-left:auto;margin-right:auto;height:80px" src="https://linc.cnil.fr/sites/default/files/styles/default/public/thumbnails/image/linc_lab_blanc-site-web-2.png?itok=fgENwmXw" >
+            </a>
+            <a class="header_link" href="http://linc.cnil.fr/">
+                <img class="header_back_button" typeof="foaf:Image" src="https://linc.cnil.fr/webpub-adstxt-sellersjson/en/static/back.svg" alt="Go Back">
+            </a>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="subhead jumbotron" id="about">
+          <h1>La Vie de la Loi</h1>
+        </div>
+
+        <div class="row info">
+          <div class="span12">
+            <p>Cette visualisation représente l'historique des versions d'un texte juridique. Elle s'appuie sur la visualisation <a href="http://visualisiert.net/parteiengesetz/index.en.html">"The Making of a Law"</a> de <a href="http://driven-by-data.net/">Gregor Aisch</a>. Chaque colonne y représente une version du texte et les rectangles représentent différents articles. Les modifications, ajouts et suppressions sont surlignés.</p>
+        </div>
+    		<div class="span12">
+    		  <p id="text-actuel"></p>
+          <p>Textes disponibles</p>
+          <table width=90%><tr width=30%><td><a href="?file=ficp.json">FICP</a></td><td><a href="?file=faed.json">FAED</a></td><td><a href="?file=fnci.json">FNCI</a></td><td><a href="?file=fpr.json">FPR</a></td></tr><tr width=30%><td><a href="?file=lil.json">LIL</a></td><td><a href="?file=ficovi.json">FICOVI</a></td><td><a href="?file=transparence.json">TRANSPARENCE</a></td><td><a href="?file=lil_2016.json">LIL_2016</a></td></tr><tr width=30%><td><a href="?file=gipsap.json">GIPSAP</a></td><td><a href="?file=cada.json">CADA</a></td><td><a href="?file=liberte_de_la_presse.json">LIBERTE DE LA PRESSE</a></td><td><a href="?file=sicovid.json">SICOVID</a></td></tr><tr width=30%><td><a href="?file=rnipp.json">RNIPP</a></td><td><a href="?file=rniam.json">RNIAM</a></td><td><a href="?file=liberte_association.json">LIBERTE ASSOCIATION</a></td><td><a href="?file=ficoba.json">FICOBA</a></td></tr><tr width=30%><td><a href="?file=lcen.json">LCEN</a></td><td><a href="?file=arcom.json">ARCOM</a></td><td><a href="?file=evafisc.json">EVAFISC</a></td><td><a href="?file=separation_eglise_etat.json">SEPARATION EGLISE ETAT</a></td></tr><tr width=30%><td><a href="?file=tes.json">TES</a></td><td><a href="?file=cpce.json">CPCE</a></td></tr></table>
+
+    			<p style="font-size:16px;"><b>Il est possible de spécifier en paramètre : l'année de début (<i>"start_year"</i>), l'année de fin (<i>"end_year"</i>) et le pas (<i>"step"</i>).Par exemple, pour visualiser les évolutions de la LIL de 2010 à 2020 en affichant qu'une version sur deux, rendez-vous <a href="?file=lil.json&start_year=2010&end_year=2020&step=2">ici</a></b> </p>
+
+        <div id="imprint" tyle="position: relative;">
+
+      </div>
+          <table>
+          <tr>
+            <td width="50%">
+              <h3>Imprint / Source</h3>
+              <p>Visualization : <a href="http://driven-by-data.net/">Gregor Aisch</a></p>
+              <p>Récupération des données (via API <a href="https://piste.gouv.fr/">PISTE</a>): <a href="https://linc.cnil.fr/fr/la-vie-de-la-loi-une-dataviz-pour-suivre-levolution-de-textes-juridiques">LINC</a></p>
+              <p>Code source: <a href="https://gitlab.adullact.net/linc1/la-vie-de-la-loi">LINC</a></p>
+            </td>
+            <td>
+              <h3>License</h3>
+              <p>You may use screenshots under terms of CC-BY-SA license.</p>
+              <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="index_files/88x31.png"></a>
+              &nbsp;&nbsp;
+            </td>
+          </tr>
+        </table>
+                 <div id="imprint" tyle="position: relative;">
+
+      </div>
+                </div>
+
+    </div>
+
+
+
+
+      <div id="vis-diff">
+          <div class="legend law">
+            <div class="article new" data-original-title=""><span>Article ajouté</span></div>
+            <div class="article deleted" data-original-title=""><span>Article supprimé</span></div>
+            <div class="article par-added" data-original-title=""><span>Clause ajoutée</span></div>
+            <div class="article par-removed" data-original-title=""><span>Clause supprimée</span></div>
+            <div class="article change" data-original-title=""><span>Autre changement</span></div>
+            <div class="article nochange" data-original-title=""><span>Aucun changement</span></div>
+			<div class="diff-options">  <span> Filtre</span> <select class="span2" id="parasel">
+              <option selected="selected">Choix d'un article</option>
+			</select>
+             <span style="position:relative;top:-3px;padding:0 5px;color:#888">or</span>
+            <input type="text" placeholder="Search by text" id="search" class="text span2">
+			</div> 
+          </div>
+		  
+		  
+        <div id="vis-diff-svg"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" style="position: absolute;"></svg></div>
+        <div id="vis-diff-html">
+
+          
+
+
+
+
+        </div>
+
+	   </div>
+
+
+      <div class="modal" id="modal-law-display" style="display:none">
+        <div class="modal-header">
+          <a class="close" data-dismiss="modal">×</a>
+          <h3>Title</h3>
+          <div class="diff-toggle"><label class="checkbox"><input type="checkbox" id="diff-toggle"> Show changes</label></div>
+          <div class="version-info">Version of <span class="version"></span></div>
+        </div>
+        <div class="modal-body">
+          <div class="current"></div>
+          <div class="diff" style="display:none"></div>
+        </div>
+        <div class="modal-footer">
+          <a href="#" class="btn" data-dismiss="modal">Close</a>
+        </div>
+      </div>
+
+
+ 
+
+
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="index_files/jquery.js"></script>
+    <script src="index_files/underscore.js"></script>
+    <script src="index_files/bootstrap.js"></script>
+
+    <script src="index_files/raphael.js"></script>
+    <script type="text/javascript" src="index_files/jsdiff.js"></script>
+    <script type="text/javascript" src="index_files/moment_002.js"></script>
+    <script type="text/javascript" src="index_files/moment.js"></script>
+    <script type="text/javascript" src="index_files/vis.js"></script>
+    <script type="text/javascript" src="index_files/vis_002.js"></script>
+    <script type="text/javascript">
+
+$(function() {
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+
+  var fileName = 'data.json';
+	var textActuel = "Vous regardez actuellement le texte : " ;
+	var startYear = 1800;
+	var endYear = 2023;
+	var step =1;
+	
+	if (urlParams.has('start_year') ) {
+	  var param = Number(urlParams.get('start_year'))
+	  if (typeof param == "number")
+		startYear = urlParams.get('start_year')
+	}
+	  
+	if (urlParams.has('end_year')   ) {
+	  var param = Number(urlParams.get('end_year'))
+	  if (typeof param == "number")
+		endYear = urlParams.get('end_year')
+	 }
+	  
+	if (urlParams.has('step') ) {
+	  var param = Number(urlParams.get('step'))
+	  if (typeof param == "number" )
+		step = urlParams.get('step')
+	}
+    if (urlParams.has('file')) {
+	  var file_param = urlParams.get('file').split(".")[0];
+	  fileName = file_param.replace(/[^a-zA-Z_]/gi, '') ;
+	 } else {
+	  fileName = "lil"
+	 }
+	  
+	
+	var textName = fileName.split(".")[0].toUpperCase();
+	fileName = "json/" + fileName +".json"
+	
+	$( "#text-actuel")[0].innerHTML  = textActuel + textName
+
+
+    $('.remark').hide();
+    var ldr = setInterval(function() {
+      var d = $('.dots');
+      if ( d.length > 0 ) {
+        if (d.html().length() < 3) d.html(d.html()+'.');
+        else d.html('');
+      }
+    }, 1000);
+
+
+    moment.lang('fr');
+    $.getJSON(fileName, function(laws) {
+
+        $('.loading').remove();
+        $('.remark').show();
+
+        visualiseDiffs(laws, startYear, endYear, step);
+
+    });
+});
+
+    </script>
+    <script type="text/javascript">
+      $(function() {
+        $('#diff-toggle').change(function(e) {
+          if ($('#diff-toggle').is(':checked')) {
+            $('#modal-law-display .diff').show();
+            $('#modal-law-display .current').hide();
+          } else {
+            $('#modal-law-display .diff').hide();
+            $('#modal-law-display .current').show();
+          }
+        });
+      });
+      </script>
+  
+
+</body></html>

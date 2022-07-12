@@ -1,0 +1,288 @@
+body {
+    background: #f5f5f5 url(../img/grid-18px-masked.png) repeat-x;
+}
+
+.subhead h1 {
+    font-size: 54px;
+    font-weight: 100!important;
+}
+
+.jumbotron h1 {
+    margin-top: 50px;
+    margin-bottom: 29px;
+    letter-spacing: -1px;
+    line-height: 1;
+}
+
+.header{
+  background-color:#333333;
+  width:100%;
+  height:100px;
+  position:fixed;
+  left: 0px;
+  top:0px;
+        z-index: 1000;
+}
+
+.header_container{
+  padding-top:10px;
+  padding-bottom:10px;
+  height:calc(100px - 20px);
+      z-index: 1000;
+}
+
+.header_back_button{
+  color: transparent;
+  height: calc(100px - 40px);
+  width: 40px;
+  object-fit:contain;
+  position:fixed;
+  left: max(calc(5vw + 15px),calc(50vw - 585px));
+  top:20px;
+        z-index: 1000;
+}
+
+.header_link:hover,
+.header_link:active{
+  background-color: transparent !important;
+  color: transparent !important;
+}
+
+
+.page-header h1 {
+    font-weight: 100;
+}
+.footer h3 { font-weight: 300; margin-bottom: 10px;}
+
+#bgbl-sources {
+    padding: 2px 0 0 0;
+    font-style: italic;
+    color: #777;
+    font-size: 12px;
+}
+
+/* law */
+
+#vis-diff {
+    position: relative;
+    height: 650px;
+    left: -10px;
+}
+#vis-diff-html, #vis-diff-svg {
+    height: 600px;
+}
+#vis-diff-html {
+    position: absolute;
+
+	margin-left: auto;
+	margin-right: auto;
+    z-index: 100;
+}
+#vis-diff-svg {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+}
+
+#vis-diff .diff-options {
+    position: absolute;
+    left: 650px;
+	 width: 350px;
+}
+
+.info p {
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 300;
+}
+
+.info {
+    margin-bottom: 80px;
+}
+
+.popover-inner {
+    width: 350px;
+}
+
+.popover-inner ul.unstyled li {
+    line-height: 18px;
+    margin-bottom: 8px;
+}
+
+.modal-body ul.unstyled li {
+    margin-bottom: 10px;
+}
+
+.diff-toggle { float: right; }
+
+ins { background: lightgreen; }
+del { background: #fcc; }
+
+
+.remark {
+    position: absolute;
+    z-index: 500;
+    font-size: 11px;
+    line-height: 14px;
+    color: #777;
+    left: -67px;
+    text-align: left;
+}
+
+.remark1 {
+    background: url(../img/remark1.png) right 4px no-repeat;
+    width: 75px;
+    top: 362px;
+}
+
+.remark.remark2 {
+    background: url(../img/remark1.png) right 4px no-repeat;
+    width: 75px;
+    top: 290px;
+}
+.remark span {
+    display: block;
+}
+
+#imprint {
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+
+
+
+#vis-diff .law {
+    position: absolute;
+    top: 0;
+    z-index: 100;
+    height: 500px;
+
+}
+
+#vis-diff .law label {
+    position:absolute;
+    top: 25px;
+    width: 30px;
+    text-align:center;
+    font-size:12px;
+    color: #777;
+}
+
+
+
+
+#vis-diff .legend.law {
+    position: absolute;
+    left: 10px;
+    top: -40px;
+}
+
+#vis-diff .legend.law .article {
+    height: 25px;
+    width: 22px;
+}
+#vis-diff .legend.law .article span {
+    position: absolute;
+    left: 27px;
+    top: 0px;
+    line-height: 13px;
+    font-size: 11px;
+    width: 60px;
+}
+
+#vis-diff .legend.law .article.new {
+    left: 0;
+    top: 0;
+}
+#vis-diff .legend.law .article.deleted {
+    left: 190px;
+    background-position: top right;
+}
+#vis-diff .legend.law .article.par-added {
+    left: 95px;
+}
+#vis-diff .legend.law .article.par-removed {
+    left: 285px;
+}
+#vis-diff .legend.law .article.change {
+    left: 380px;
+}
+#vis-diff .legend.law .article.nochange {
+    left: 475px;
+}
+
+
+
+
+
+
+#vis-diff .law .article {
+    border: 1px solid #555;
+    z-index: 3;
+    width: 27px;
+    left: 0;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 1px 1px 1px #ccc;
+
+}
+
+#vis-diff .law .article.new {
+    background: #fff url(../img/article-added.png);
+}
+
+#vis-diff .law .article.deleted {
+    background: #fff url(../img/article-deleted.png);
+}
+#vis-diff .law .article.deleted.par-added {
+    background: #fff url(../img/article-deleted-par-added.png);
+}
+#vis-diff .law .article.deleted.par-removed {
+    background: #fff url(../img/article-deleted-par-removed.png);
+}
+#vis-diff .law .article.par-added {
+    background: url(../img/paragraph-added.png);
+    border-color: #333;
+}
+
+#vis-diff .law .article.par-removed {
+    background: url(../img/paragraph-removed.png);
+    border-color: #333;
+}
+
+#vis-diff .law .article.nochange {
+    background-color: #d6d6d6;
+    border-color:#aaa;
+    z-index: 2;
+}
+
+#vis-diff .law .article.hidden {
+    background: #ededed!important;
+    border-color: #ddd!important;
+    box-shadow: 1px 1px 1px #ddd;
+    z-index: 1;
+}
+
+
+#vis-diff .law.nolegend .article:hover {
+    z-index: 200;
+    border-color: #000;
+    border-width: 2px;
+    width: 28px;
+    position: relative;
+    top: -1px;
+    left: -1px;
+}
+
+.loading {
+    text-align: center;
+    position: relative;
+    width: 925px;
+    font-weight: 100;
+    font-size: 50px;
+    padding-top: 250px;
+}
