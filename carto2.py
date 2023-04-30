@@ -8,24 +8,24 @@ import copy
 from datetime import datetime
 
 
-# This information is obtained upon registration of a new GitHub
-client_id = #Get from PISTE
-client_secret = #Get from PISTE
+# This information is obtained upon registration  on PISTE
+client_id = #Client ID from PISTE
+client_secret = #Client Scret from PISTE
 authorization_base_url = 'https://sandbox-oauth.piste.gouv.fr/api/oauth/authorize'
 token_url = 'https://sandbox-oauth.piste.gouv.fr/api/oauth/token'
 scope = 'openid'
-path = '/dila/legifrance-beta/lf-engine-app'
+path = '/dila/legifrance/lf-engine-app'
 host = 'https://sandbox-api.piste.gouv.fr'
 
 
-
 #Optional parameters
-legi_id = "JORFTEXT000000864438"
+legi_id = ""
+debug_ = False
+code_id = ""
 output_file = "data.json"
 start_year= 1800
 end_year = 2023
 section_number = 1
-
 
 
 def get_token():
@@ -37,16 +37,17 @@ def get_token():
     return token
 
 def get_resource(token,data,resource):
-    #print(data)
+    debug("getting resource " + str(data) +" from "+ resource)
     piste = OAuth2Session(client_id, token=token)
     headers = {"Content-Type": "application/json"}
     r = piste.post(host+path+resource, data=json.dumps(data), headers=headers)
-    #print(r.content)
+    debug("Resource loaded " + str(r.content))
     return json.loads(r.content.decode('utf-8'))
 
 
 
 def get_versions_date(token, text_id):
+    # Retourne la liste des dates auxquelles un texte a été modifié
     #today = datetime.today().strftime('%Y-%m-%d')
     dates = []
     data ={ 
@@ -55,6 +56,7 @@ def get_versions_date(token, text_id):
         "textCid": text_id
     }
     result = get_resource(token,data,'/chrono/textCid')
+    debug("Text versions : " + str(result) )
     groups = result["regroupements"]
     for group in groups:
         versions = group["versions"]
@@ -62,7 +64,7 @@ def get_versions_date(token, text_id):
             version = versions[key]
             timestamp = version["dateDebut"]/1000
             date = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d')
-            #print( date )
+            print( date )
             dates.append(date)
     return dates
         
@@ -76,6 +78,7 @@ def get_articles(article_list,has_subsection = True):
     result = []
     last_section_nb = 0
     for element in article_list|where(lambda x: ((not "etat" in x) or (x["etat"] != "ABROGE")) ) :
+        debug(element)
         article = {}
         if ( "num" in element) and (element["num"] != None) and (not element["num"].startswith("Annexe")):
             number = element["num"]
@@ -105,6 +108,7 @@ def get_articles(article_list,has_subsection = True):
 
 
 def get_first_article_number(section):
+    # Utilisée pour pouvoir classer les sections dans l'ordre des articles
     result =0
     while len(section["sections"])> 0 : 
         section = section["sections"][0]
@@ -120,7 +124,7 @@ def parse_sub_sections(section) :
     global section_number
     result = []
     if len(section["sections"]) >0 :
-        for sub_section in section["sections"]|where(lambda x: (((not "etat" in x) or (x["etat"] != "ABROGE")) and (x["title"]!= "Annexe")) ) :
+        for sub_section in section["sections"]|where(lambda x: (((not "etat" in x) or (x["etat"] != "ABROGE")) and (x["title"]!= "Annexe") and(x["title"]!= "Annexes") and(x["title"]!= "ANNEXE")  ) ) :
             result = result + parse_sub_sections( sub_section)
     if len(section["articles"]) > 0:
         result = result + get_articles(section["articles"])
@@ -130,6 +134,7 @@ def parse_sub_sections(section) :
 
 
 def get_text_version(token, text_id, date):
+    # Récupère la version d'un texte à une date donnée
     global section_number
     result = []
     section_number = 1
@@ -140,15 +145,20 @@ def get_text_version(token, text_id, date):
     print("Get text version " + text_id + " at time " + date )
     resource = get_resource(token,data,"/consult/legiPart")
     #print(resource)
+
+
+    articles = resource["articles"]
+    if len(articles) >0:
+        result = result + get_articles(articles,True) 
+        section_number +=1
+
+
     sections = resource["sections"]    
 
     if len(sections) > 0:
-        for section in sections|where(lambda x: (((not "etat" in x) or (x["etat"] != "ABROGE")) and(x["title"]!= "Annexe") )) | sort(key = lambda x: get_first_article_number(x)):
+        for section in sections|where(lambda x: (((not "etat" in x) or (x["etat"] != "ABROGE")) and(x["title"]!= "Annexe") and(x["title"]!= "Annexes") and(x["title"]!= "ANNEXE")  )) | sort(key = lambda x: get_first_article_number(x)):
             result = result + parse_sub_sections(section)
-    else :
-        articles = resource["articles"]
-        result = get_articles(articles,False)
-        return result
+
 
     return result
 
@@ -161,6 +171,10 @@ def print_help_message():
            " -from: from which year you'd like to see modification of the law \n"\
            " -to: until which year you'd like to see modification of the law" )
 
+def debug (text) :
+    global debug_
+    if (debug_ is True ) :
+        print (text)
 
 def post_process(text_list) :
     text_list = text_list|sort(key = lambda x:x["source"])
@@ -184,10 +198,36 @@ def post_process(text_list) :
 
     return text_list
 
+def get_list_sections ( code_id):
+    return
 
+def get_versions_of_a_section (code_id, section_id):
+    return
 
+def create_code_jsons():
+    #print(output_file)
+    text_versions = []
+    index = 0
+    start_date = str(start_year) +"-01-01"
+    end_date = str(end_year) +"-12-31"
+    token = get_token()
+    dates = get_versions_date(token,legi_id)
+    print(dates)
+    for date in dates|where(lambda x : start_date < x < end_date) :
+        print(date)
+        version = {
+            "source" : date,
+            "id" : legi_id,
+            "published" : date,
+            "link" : "https://www.legifrance.gouv.fr/loda/id/" + legi_id + "/" + date,
+            "articles" : get_text_version(token, legi_id,date)| sort(key = lambda x:x["section"])
+        }
+        text_versions.append(version)
 
-
+    text_versions = post_process(text_versions)
+    #print(json.dumps(result))
+    with open(output_file, 'w', encoding='utf-8') as f:
+        json.dump(text_versions, f)
 
 def create_json():
     #print(output_file)
@@ -199,6 +239,7 @@ def create_json():
     dates = get_versions_date(token,legi_id)
     print(dates)
     for date in dates|where(lambda x : start_date < x < end_date) :
+        print(date)
         version = {
             "source" : date,
             "id" : legi_id,
@@ -217,7 +258,7 @@ def create_json():
 
 
 def main(argv):
-    global output_file, legi_id, start_year, end_year
+    global output_file, legi_id, code_id, start_year, end_year, debug_
     """ main helper function, reads command-line arguments and launches crawl """
     # filters out bad arguments
     if len(argv) < 2 :
@@ -231,17 +272,26 @@ def main(argv):
             output_file = argv[i+1].lower() 
         if argv[i] == "-legid" or argv[i] == "--l":
             legi_id = argv[i+1]
+        if  argv[i] == "-codeid" or argv[i] == "--c":
+            code_id = argv[i+1]
         if argv[i] == "-from" :
             start_year = argv[i+1]
         if argv[i] == "-to" :
             end_year = argv[i+1]
+        if argv[i] == "--debug" :
+            debug_ = True
     
+    if legi_id != "":
+        create_json()
 
-    create_json()
+    #if code_id != "":
+    #    create_code_jsons()
+
 
 
 if __name__ == "__main__":
     main(sys.argv)
+
 
 
 
