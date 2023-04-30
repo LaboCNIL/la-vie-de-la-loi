@@ -12,8 +12,8 @@ Initialement prévu pour une loi précise, nous proposons de l'utiliser pour une
 **Ce programme s'appuie sur les API de legifrance, pour les utiliser, créer vous un compte sur le portail PISTE**
 - Rendez-vous sur le site : https://piste.gouv.fr/component/apiportal/registration
 - Créez une application en mode Sandbox pour pouvoir accèder à l'API de Legifrance : https://piste.gouv.fr/index.php?option=com_apiportal&view=apitester&usage=api&apitab=tests&apiName=DILA+-+L%C3%A9gifrance+Beta&apiId=404c503e-d69d-4f2d-9909-00d33bd56701&managerId=2&type=rest&apiVersion=1.6.2.5&Itemid=265&swaggerVersion=2.0&lang=fr 
-- Une fois votre application créée, cliquer sur "Cliquer ici pour accéder à la page de consentement" et valider les CGU des APIs de la DILA
-- Séléctionnez ensuite les APIs de Legifrance pour votre application
+- Une fois votre application créée, cliquer sur "Cliquer ici pour accéder à la page de consentement" et valider les CGU des APIs de la DILA dans leur version "Production" et dans leur version "Sandbox" 
+- Séléctionnez ensuite les APIs de Legifrance de votre application "Sandbox"
 - Remplacez dans le fichier "carto2.py" les valeurs correspondant au Client ID et à la clé secrète OAuth de votre application 
 
 
